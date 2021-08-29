@@ -1,11 +1,19 @@
 import './App.css';
 import React from 'react';
-import { Router } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+
+import Home from '../src/components/home/home'
+import PageInit from '../src/components/pagePrincipal/pageinicial';
 
 function App() {
   return (
     <div className="App">
-      <h1>Henry Dogs</h1>
+      <header className="App-header">
+        <Route exact path='/home' component={Home} />
+        <Route exact path='/' component={PageInit} />
+       
+      </header>
+
     </div>
   );
 }
