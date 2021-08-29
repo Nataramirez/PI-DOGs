@@ -42,7 +42,7 @@ module.exports = (sequelize) => {
     fullweight: {
       type: DataTypes.VIRTUAL,
       get(){
-        return `Weight Min ${this.weightmin} - Weight Max${this.weightmax}`;
+        return `Weight Min ${this.weightmin} - Weight Max ${this.weightmax}`;
       },
     },
     life_span: {
