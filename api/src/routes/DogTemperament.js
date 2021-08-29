@@ -31,7 +31,11 @@ router.post('/', async function (req, res) {
 })
 
 router.get('/', async function (req, res) {
-    const listTemps = await Temperament.findAll()
+    const listTemps = await Temperament.findAll({
+        attributes: {
+            exclude: ['createdAt', 'updatedAt', 'id_temp']
+        }
+    })
     if(listTemps.length > 0) {
         res.json(listTemps)
     }else{

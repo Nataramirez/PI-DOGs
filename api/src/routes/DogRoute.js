@@ -9,19 +9,20 @@ Crea una raza de perro en la base de datos
 */
 
 router.post('/', async function(req, res){
-    const { name, weight, heightmin, heightmax, life_spam, temperament } = req.body;
+    const { name, heightmin, heightmax, weightmin, weightmax, life_span, temperament } = req.body;
     try {
         const newDog = await Dog.create({
             name, 
-            weight, 
+            weightmin, 
+            weightmax, 
             heightmin,
             heightmax,
-            life_spam,
-                    
-        })
+            life_span,
+                   
+        });
         temperament.forEach(async e => {
            await newDog.addTemperament(e)
-        })
+        });
         return res.json(newDog) 
         
         

@@ -32,12 +32,41 @@ router.get('/', async function (req, res) {
 
       let newresponse = [];
       const response = await axios.get(`https://api.thedogapi.com/v1/breeds/search?q=${name}&api_key=${API_KEY}`)
-      // consoleconsole.log(response.data)
+      console.log(response.data)
       const dog = await Dog.findAll({
+         include: [{
+            model: Temperament,
+            attributes: {
+               exclude: ['createdAt', 'updatedAt', 'id_temp'],
+            },
+            through: {
+               attributes: []
+            }
+         }],
          where: {
-            name:  name 
+            name: name
+         },
+         attributes: {
+            exclude: ['createdAt', 'updatedAt', 'id_dog'],
          }
       });
+
+
+
+      let dogDbFilter = [];
+      /*
+      dog.forEach(element =>{
+         dogDbFilter.push({
+            name: element.name,
+            temperaments: element.temperaments,
+         })
+      })
+      */
+      /*
+      
+      */
+
+
       newresponse = [...dog, ...response.data]
       //console.log(newresponse)
       //console.log(dog)
@@ -55,11 +84,11 @@ router.get('/:id_dog', async function (req, res) {
    try {
 
       let newresponse = [];
-      
-      if(id_dog.indexOf('-') !== -1) {
-         const dog = await Dog.findAll({         
+
+      if (id_dog.indexOf('-') !== -1) {
+         const dog = await Dog.findAll({
             include: [{
-               model: Temperament, 
+               model: Temperament,
                attributes: {
                   exclude: ['createdAt', 'updatedAt', 'id_temp'],
                },
@@ -73,33 +102,52 @@ router.get('/:id_dog', async function (req, res) {
             attributes: {
                exclude: ['createdAt', 'updatedAt', 'id_dog'],
             }
-         }); 
-        
-         newresponse = [...dog]
-         //console.log(newresponse)
-         return newresponse.length > 0 ? res.json(newresponse) : res.send('¡Dog not found!')
-      }else{
-         const response = await axios.get(`https://api.thedogapi.com/v1/breeds/${id_dog}&api_key=${API_KEY}`);
-         console.log(response.data)
-         
-         for(let property in response.data){
+         });
+
+         dog.forEach(element => {
+
+            let properties = []            
+            for(let i = 0; i < element.temperaments.length; i++) {
+               properties.push(Object.values(element.temperaments[i].name).join(''))
+            }
+            let temperamentsFilter = properties.join(', ')
+
             newresponse.push({
-               name: response.data.name,
-               height: response.data.height,
-               weight: response.data.weight,
-               life_span: response.data.life_span,
-               temperament: response.data.temperament,
+               name: element.name,
+               height: element.fullheight,
+               weight: element.fullweight,
+               life_span: element.fullLife_span,
+               temperaments: temperamentsFilter,
+            
             })
+                        
+         })
+
+         return newresponse.length > 0 ? res.json(newresponse) : res.send('¡Dog not found!')
+
+      } else {
+         const response = await axios.get(`https://api.thedogapi.com/v1/breeds/${id_dog}&api_key=${API_KEY}`);
+         //console.log(response.data)
+
+         for (let property in response.data) {
+            while (newresponse.length === 0) {
+               newresponse.push({
+                  name: response.data.name,
+                  height: response.data.height,
+                  weight: response.data.weight,
+                  life_span: response.data.life_span,
+                  temperament: response.data.temperament,
+               })
+            }
+
          }
-          console.log(newresponse)
-         
+         //console.log(newresponse)
+
          //newresponse.push(response.data)
-              
-         return res.json(newresponse);
-        
+
+         return newresponse.length > 0 ? res.json(newresponse) : res.send('¡Dog not found!')
       }
 
-      
 
    } catch (error) {
       res.send(error)
