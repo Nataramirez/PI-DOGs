@@ -22,9 +22,70 @@ router.get('/', async function (req, res) {
       //[ ] GET /dogs lista completa
       if (name === undefined) {
          let newresponse = [];
+         let fulldogDbFilter = [];
+         let fulldogApiFilter = [];
+         let dogsApiFilter = [];
+
          const response = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`);
-         const dogsList = await Dog.findAll();
-         newresponse = [...dogsList, ...response.data]
+         for (let i = 0; i < response.data.length; i++) {
+
+            for (let properties in response.data[i]) {
+               let filterName = [];
+               let filterTemperaments = [];
+               if (properties === 'name') {
+                  if (filterName.length === 0) {
+                     filterName.push({
+                        name: response.data[i].name,
+                     })
+                  }
+                  fulldogApiFilter.push(filterName);
+               }
+
+               if (properties === 'temperament') {
+                  if (filterTemperaments.length === 0) {
+                     filterTemperaments.push({
+                        temperaments: response.data[i].temperament
+                     })
+                  }
+                  fulldogApiFilter.push(filterTemperaments);
+               }
+            }
+         }
+         console.log(fulldogApiFilter[0][0])
+         console.log(fulldogApiFilter[1][0])
+         for (let i = 0; i < fulldogApiFilter.length; i++) {
+            for (let j = i + 1; j < fulldogApiFilter.length - 1; j++) {
+
+            }
+         }
+         const dogsList = await Dog.findAll({
+            include: [{
+               model: Temperament,
+               attributes: {
+                  exclude: ['createdAt', 'updatedAt', 'id_temp'],
+               },
+               through: {
+                  attributes: []
+               }
+            }],
+            attributes: {
+               exclude: ['createdAt', 'updatedAt', 'id_dog', 'life_span', 'fullLife_span',
+                  'heightmin', 'heightmax', 'weightmax', 'weightmin', 'fullheight', 'fullweight'],
+            }
+         });
+         dogsList.forEach(element => {
+            let properties = []
+            for (let i = 0; i < element.temperaments.length; i++) {
+               properties.push(Object.values(element.temperaments[i].name).join(''))
+            }
+            let temperamentsFilter = properties.join(', ')
+            fulldogDbFilter.push({
+               name: element.name,
+               temperaments: temperamentsFilter,
+            })
+         })
+         // newresponse = [...dogsList, ...response.data]
+         newresponse = [...fulldogDbFilter, ...fulldogApiFilter]
          return newresponse.length > 0 ? res.json(newresponse) : res.send('¡List of dogs not found!')
       }
 
@@ -42,7 +103,6 @@ router.get('/', async function (req, res) {
             temperaments: element.temperament
          })
       })
-
 
       const dog = await Dog.findAll({
          include: [{
@@ -62,6 +122,7 @@ router.get('/', async function (req, res) {
                'heightmin', 'heightmax', 'weightmax', 'weightmin', 'fullheight', 'fullweight'],
          }
       });
+
       dog.forEach(element => {
          let properties = []
          for (let i = 0; i < element.temperaments.length; i++) {
@@ -73,16 +134,10 @@ router.get('/', async function (req, res) {
             temperaments: temperamentsFilter,
          })
       })
-      
-
-
-
-
-
 
       newresponse = [...dogDbFilter, ...dogApiFilter]
       //console.log(newresponse)
-      //console.log(dog)
+
       return newresponse.length > 0 ? res.json(newresponse) : res.send('¡Dog not found!')
 
    } catch (error) {
@@ -142,7 +197,9 @@ router.get('/:id_dog', async function (req, res) {
          const response = await axios.get(`https://api.thedogapi.com/v1/breeds/${id_dog}&api_key=${API_KEY}`);
          //console.log(response.data)
          const responseImage = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`);
+         //console.log(responseImage.data);
          let referenceImage = [];
+         let url = '';
          referenceImage.push({
             ref: response.data.reference_image_id
          })
