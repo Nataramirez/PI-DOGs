@@ -1,6 +1,13 @@
-.ImageInit { 
-    background-position: center;
-    background-size: 50% 50%;
-    max-width: 100%;
-	height: auto;
+
+.PageInit { 
+    color: #282c34;
+    background-image: url("../../pictures/picturepageppal.png")
+}
+.Page { 
+    display: flex;
+    
+}
+.ImageInit {
+    height: 100%;
+    width: 100%;
 }

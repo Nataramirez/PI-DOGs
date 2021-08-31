@@ -24,40 +24,19 @@ router.get('/', async function (req, res) {
          let newresponse = [];
          let fulldogDbFilter = [];
          let fulldogApiFilter = [];
-         let dogsApiFilter = [];
 
          const response = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`);
-         for (let i = 0; i < response.data.length; i++) {
+         //console.log(response.data)
+         response.data.forEach(element => {
+            fulldogApiFilter.push({
+               name: element.name,
+               temperaments: element.temperament,
+               weightmin: element.weight.metric,
+               weightmax: element.weight.imperial,
+               image: element.image.url,
+            })
+         })
 
-            for (let properties in response.data[i]) {
-               let filterName = [];
-               let filterTemperaments = [];
-               if (properties === 'name') {
-                  if (filterName.length === 0) {
-                     filterName.push({
-                        name: response.data[i].name,
-                     })
-                  }
-                  fulldogApiFilter.push(filterName);
-               }
-
-               if (properties === 'temperament') {
-                  if (filterTemperaments.length === 0) {
-                     filterTemperaments.push({
-                        temperaments: response.data[i].temperament
-                     })
-                  }
-                  fulldogApiFilter.push(filterTemperaments);
-               }
-            }
-         }
-         console.log(fulldogApiFilter[0][0])
-         console.log(fulldogApiFilter[1][0])
-         for (let i = 0; i < fulldogApiFilter.length; i++) {
-            for (let j = i + 1; j < fulldogApiFilter.length - 1; j++) {
-
-            }
-         }
          const dogsList = await Dog.findAll({
             include: [{
                model: Temperament,
@@ -70,7 +49,7 @@ router.get('/', async function (req, res) {
             }],
             attributes: {
                exclude: ['createdAt', 'updatedAt', 'id_dog', 'life_span', 'fullLife_span',
-                  'heightmin', 'heightmax', 'weightmax', 'weightmin', 'fullheight', 'fullweight'],
+                  'heightmin', 'heightmax', 'fullheight', 'fullweight'],
             }
          });
          dogsList.forEach(element => {
@@ -82,6 +61,8 @@ router.get('/', async function (req, res) {
             fulldogDbFilter.push({
                name: element.name,
                temperaments: temperamentsFilter,
+               weightmin: element.weightmin,
+               weightmax: element.weightmax,
             })
          })
          // newresponse = [...dogsList, ...response.data]
@@ -100,7 +81,8 @@ router.get('/', async function (req, res) {
       response.data.forEach(element => {
          dogApiFilter.push({
             name: element.name,
-            temperaments: element.temperament
+            temperaments: element.temperament,
+
          })
       })
 
@@ -115,7 +97,7 @@ router.get('/', async function (req, res) {
             }
          }],
          where: {
-            name: name
+            name: { [Op.substring]: name },
          },
          attributes: {
             exclude: ['createdAt', 'updatedAt', 'id_dog', 'life_span', 'fullLife_span',
@@ -195,14 +177,9 @@ router.get('/:id_dog', async function (req, res) {
 
       } else {
          const response = await axios.get(`https://api.thedogapi.com/v1/breeds/${id_dog}&api_key=${API_KEY}`);
-         //console.log(response.data)
-         const responseImage = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`);
-         //console.log(responseImage.data);
-         let referenceImage = [];
-         let url = '';
-         referenceImage.push({
-            ref: response.data.reference_image_id
-         })
+         console.log(response.data)
+         //const responseImage = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`);
+         //console.log(responseImage.data);      
 
          let heightImperial = '';
          let heightMetric = '';
@@ -259,6 +236,7 @@ router.get('/:id_dog', async function (req, res) {
             weight: fullWeight ? fullWeight : res.send('¡Dog not found!'),
             life_span: response.data.life_span,
             temperament: response.data.temperament,
+
          })
 
          return newresponse.length > 0 ? res.json(newresponse) : res.send('¡Dog not found!')

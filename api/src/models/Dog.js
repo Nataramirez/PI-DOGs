@@ -15,44 +15,52 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true,
     },
-    heightmin: { 
+    heightmin: {
       type: DataTypes.STRING,
-    },    
-    
-    heightmax: { 
-      type: DataTypes.STRING,
+      allowNull: false,
     },
-        
-    fullheight: { 
+
+    heightmax: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    fullheight: {
       type: DataTypes.VIRTUAL,
-      get(){
+      get() {
         return `Height Min ${this.heightmin} - Height Max ${this.heightmax}`;
       },
       /*set(value) {
         throw new Error('Do not try to set the `fullHeight` value!');
       }*/
-    },  
-    weightmin: { 
+    },
+    weightmin: {
       type: DataTypes.STRING,
-    },    
-    
-    weightmax: { 
+      allowNull: false,
+    },
+
+    weightmax: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     fullweight: {
       type: DataTypes.VIRTUAL,
-      get(){
+      get() {
         return `Weight Min ${this.weightmin} - Weight Max ${this.weightmax}`;
       },
     },
     life_span: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     fullLife_span: {
       type: DataTypes.VIRTUAL,
-      get(){
+      get() {
         return `${this.life_span} years`
       },
     },
-  });
+  }, {
+    timestamps: false,
+  }
+  );
 };
