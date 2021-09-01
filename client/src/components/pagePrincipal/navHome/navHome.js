@@ -34,7 +34,7 @@ export class Nav extends Component {
 
        <nav>
        <Link to='/dogs' onClick={() => this.handleSubmit()}>
-        <button type="button" >Ingresar</button>
+        <button type="button" >To go...</button>
         </Link>
        </nav>
        
@@ -46,7 +46,7 @@ export class Nav extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    breeds: state.breedLoaded
+    breeds: state.breedLoaded //estado global 
   }
 }
 

@@ -29,6 +29,7 @@ router.get('/', async function (req, res) {
          //console.log(response.data)
          response.data.forEach(element => {
             fulldogApiFilter.push({
+               id: element.id,
                name: element.name,
                temperaments: element.temperament,
                weightmin: element.weight.metric,

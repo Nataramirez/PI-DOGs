@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 
 import NavHome from './navHome/navHome'
@@ -6,15 +6,16 @@ import imageInit from '../../../src/pictures/picturepageppal.png'
 import './pageinicial.css';
 
 export function PageInit() {
+    
     return (
-        <div className="page">
-            <div>
+        <div className="pageInit">
+           
                 <NavHome />
-            </div>
-            <div className="PageInicial">
-                <h1>The Dogs API</h1>
-                <img className='ImageInit' src={imageInit} alt='Imagen de perro' />
-            </div>
+        
+            
+                <h2 className="pageInit">The Dogs API</h2>
+                <img className="App" weight="900" height="430" src={imageInit} alt='Imagen de perro' />
+            
         </div>
 
     )

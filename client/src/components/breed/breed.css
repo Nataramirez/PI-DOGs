@@ -1,0 +1,19 @@
+.breed-container {
+    margin: auto;
+    padding: 10px;
+    display: inline-block;
+    flex-flow: column;
+    justify-content: space-between;
+    position: relative;
+    
+}
+
+.text-responsive{
+    
+    padding: 8px 10px;
+    border: 1px;
+    display: flex;
+    justify-content:center;
+
+
+}

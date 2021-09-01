@@ -46,7 +46,7 @@ export function getSearchBreedById(id_dog) {
 // get/dogs 
 export function getSearchAllBreed() {
     return function (dispatch) {
-        fetch(`http://localhost:3001/dogs`)
+        return fetch(`http://localhost:3001/dogs`)
             .then(response => response.json())
             .then(json => {
                 dispatch({

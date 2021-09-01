@@ -13,7 +13,8 @@ function App() {
       <header className="App-header">
         <Route exact path="/dogs"> <Home /></Route>
         <Route exact path='/' component={PageInit} />
-        <Route exact path='/add' component={AddDog} />
+        <Route exact path='/dog' component={AddDog} />
+     
 
       </header>
 

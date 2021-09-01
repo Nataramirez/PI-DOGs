@@ -1,13 +1,21 @@
 
 .PageInit { 
+    max-height:100%;
+    margin: auto;
+    display: block;
+    justify-content: center;
+    padding: 10px;
     color: #282c34;
+   
+}
+
+.App{
     background-image: url("../../pictures/picturepageppal.png")
+   
 }
 .Page { 
     display: flex;
+    padding: 10px;
     
 }
-.ImageInit {
-    height: 100%;
-    width: 100%;
-}
+
