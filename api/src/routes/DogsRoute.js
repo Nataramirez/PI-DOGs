@@ -20,7 +20,7 @@ router.get('/', async function (req, res) {
 
    try {
       //[ ] GET /dogs lista completa
-      if (name === undefined) {
+      if (name === undefined || name === null) {
          let newresponse = [];
          let fulldogDbFilter = [];
          let fulldogApiFilter = [];
@@ -75,7 +75,7 @@ router.get('/', async function (req, res) {
 
       let newresponse = [];
       const response = await axios.get(`https://api.thedogapi.com/v1/breeds/search?q=${name}&api_key=${API_KEY}`)
-      //console.log(response.data)
+      console.log(response.data)
       let dogApiFilter = [];
       let dogDbFilter = [];
 
@@ -83,6 +83,9 @@ router.get('/', async function (req, res) {
          dogApiFilter.push({
             name: element.name,
             temperaments: element.temperament,
+            refImage: element.reference_image_id,
+            id: element.id,
+            
 
          })
       })

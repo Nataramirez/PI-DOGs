@@ -16,6 +16,7 @@ export function addBreedNew(payload) {
 };
 
 // get/ query name
+
 export function getSearchBreedByName(name) {
     return function (dispatch) {
         fetch(`http://localhost:3001/dogs?name=${name}`)
@@ -28,6 +29,20 @@ export function getSearchBreedByName(name) {
             })
     }
 }
+
+
+
+// get name------ prueba 
+/*
+export function getSearchBreedByName(name) {
+    return  {
+        type: SEARCH_BREED_BY_NAME,
+        payload: name
+    }
+}
+*/
+
+
 
 // get/ params id_dog
 export function getSearchBreedById(id_dog) {

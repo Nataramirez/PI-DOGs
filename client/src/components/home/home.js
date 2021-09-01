@@ -7,10 +7,12 @@ import { useEffect, useState } from 'react';
 import { getSearchAllBreed } from '../../actions/index.js';
 import ImageDefault from '../../pictures/PictureDataBase.png';
 
-function Home({ breedLoaded, getSearchAllBreed }) { // este breed viene de redux
+function Home({ breedLoaded, breedSearch, getSearchAllBreed }) { // este breed viene de redux
 
   const [breedsLoaded, setbreedLoaded] = useState([]); // hasta el momento no se esta usando este estado local
   useEffect(() => { getSearchAllBreed() }, [getSearchAllBreed]);
+
+  //function si lista * name .lenght === 0 imprimir 
 
   return (
     <div className="container">
@@ -18,13 +20,17 @@ function Home({ breedLoaded, getSearchAllBreed }) { // este breed viene de redux
         <NavHome />
       </nav>
       <div>
-        {
-          breedLoaded.map(breed => { //recorro mi estado global 
+        { //         ()
+          breedLoaded && breedSearch < 1 ? breedLoaded.map((breed, i) => {
             return (
-              <Breed name={breed.name} image={breed.image ? breed.image : ImageDefault } temperaments={breed.temperaments} />
+              <Breed key={i} name={breed.name} image={breed.image ? breed.image : ImageDefault } temperaments={breed.temperaments} /> 
             )
-          }
-          )
+          }) : breedLoaded && breedSearch ?
+          breedSearch.map((breed, i) => { //recorro mi estado global 
+            return ( 
+              <Breed key={i} name={breed.name} image={breed.image ? breed.image : ImageDefault } temperaments={breed.temperaments} />
+            )
+          }) : null
         }
       </div>
     </div>
@@ -36,7 +42,8 @@ function Home({ breedLoaded, getSearchAllBreed }) { // este breed viene de redux
 
 const mapStateToProps = (state) => {
   return {
-    breedLoaded: state.breedLoaded //estado global 
+    breedLoaded: state.breedLoaded, //estado global todas las realizarse
+    breedSearch: state.breedSearch
   }
 }
 

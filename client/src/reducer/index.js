@@ -1,4 +1,5 @@
 
+import { orderBreedNameDesc } from '../actions';
 import { ADD_BREED_NEW } from '../actions/actions';
 import { SEARCH_BREED_BY_NAME } from '../actions/actions'
 import { SEARCH_BREED_BY_ID } from '../actions/actions'
@@ -12,6 +13,7 @@ import { ORDER_BREED_WEIGHT_DESC } from '../actions/actions'
 const inicialState = {
   breeds: [],
   breedLoaded: [],
+  breedSearch: [], // alterna 
   breedDetail: {}
 };
 
@@ -29,7 +31,7 @@ const breedsReducer = (state = inicialState, action) => {
     case SEARCH_BREED_BY_NAME:
       return {
         ...state,
-        breedLoaded: action.payload.Search
+        breedSearch: action.payload
       }
 
     // get/params id_dog

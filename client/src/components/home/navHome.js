@@ -1,40 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './navHome.css'
 import { connect } from 'react-redux';
 import { getSearchBreedByName } from '../../actions/index'
+import Breed from '../breed/breed'
+import ImageDefault from '../../pictures/PictureDataBase.png'
 
-function NavHome({ breedLoaded, getSearchBreedByName }) {
+function NavHome({ breedSearch, breedsLoaded, getSearchBreedByName }) { //copio mi estado global
+
+    const [input, setInput] = useState({
+        name: ''
+    });
+    const [breedLoaded, setbreedLoaded] = useState([]);
+
+    const handleSubmit = (event) => {
+        getSearchBreedByName(input)
+        event.preventDefault();
+    }
+
+    function handleChange(event) {
+        setInput(event.target.value)
+    }
+
     return (
+        <div className="container"> 
         <div className="grid-block">
-            <nav className="navbar">
-                <Link to='/dogs?name='>
-                    <form>
-                        <label>
-                            <input
-                                type='text'
-                               
-                                placeholder='Write here...'
-                            //value={}
-                            //onChange={}
-                            />
-                            <button type='submit'>Search</button>
-                        </label>
-                    </form>
-                </Link>
+            <nav className="navbar" >
+
+                <label>
+                    <input
+                        type='text'
+                        name='name'
+                        autoComplete="off"
+                        placeholder='Write here...'
+                        value={input.name}
+                        onChange={handleChange}
+                    />
+                    <button onClick={(e) => handleSubmit(e)} type='submit' >Search</button>
+                </label>
                 <br />
                 <Link to='/dog'>
                     <button type="button">Add Breed</button>
                 </Link>
             </nav>
+            </div>        
         </div>
     );
 };
 
 const mapStateToProps = (state) => {
     return {
-        breedLoaded: state.breedLoaded
+        breedSearch: state.breedSearch, // mi stado global
+        breedsLoaded: state.breedLoaded
     }
 }
+
 
 export default connect(mapStateToProps, { getSearchBreedByName })(NavHome);
