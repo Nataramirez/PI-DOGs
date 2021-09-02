@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
-import { addBreedNew } from '../../actions/index'
+import { addBreedNew, getSearchAllBreed } from '../../actions/index'
 
 
-export function AddDog() {
-    const [input, setInput] = useState([]);
+function AddDog({ breedLoaded, addBreedNew, getSearchAllBreed }) {
+    useEffect(() => { getSearchAllBreed() }, [getSearchAllBreed]);
+
+
+    const [input, setInput] = useState({
+        name: '',
+        weightmin: '',
+        weightmax: '',
+        heightmin: '',
+        heightmax: '',
+        life_span: '',
+        temperaments: []
+
+    });
 
     function handleSubmit(e) {
-        alert(`¡The breed has been successfully created!`)
         addBreedNew(input);
         e.preventDefault();
-
     }
 
     function handleChange(e) {
@@ -21,72 +31,77 @@ export function AddDog() {
     }
 
     return (
-        <div>
+        <div className="container">
             <form onSubmit={handleSubmit}>
-                <label>
+                <label htmlFor="name" >
                     Name your bread:
-                    <br />
                     <input
+                        id='name'
                         name='name'
                         type='text'
                         placeholder='Write here...'
                         value={input.name}
-                        onChange={handleChange}
+                        onChange={(e) => handleChange(e)}
                     />
                 </label>
                 <br />
-                <label>
-                    Minimum weight of your breed:
-                    <br />
+                <br />
+                <label htmlFor="weightmin">
+                    Minimum weight:
                     <input
+                        id='weightmin'
                         name='weightmin'
                         type='text'
                         placeholder='Write here...'
                         value={input.weightmin}
-                        onChange={handleChange}
+                        onChange={(e) => handleChange(e)}
                     />
                 </label>
                 <br />
-                <label>
-                    Maximum weight of your breed:
-                    <br />
+                <br />
+                <label htmlFor="weightmax" >
+                    Maximum weight:
                     <input
+                        id='weightmax'
                         name='weightmax'
                         type='text'
                         placeholder='Write here...'
                         value={input.weightmax}
-                        onChange={handleChange}
+                        onChange={(e) => handleChange(e)}
                     />
                 </label>
                 <br />
-                <label>
-                    Minimum height of your breed:
-                    <br />
+                <br />
+                <label htmlFor="heightmin" >
+                    Minimum height:
                     <input
+                        id='heightmin'
                         name='heightmin'
                         type='text'
                         placeholder='Write here...'
                         value={input.heightmin}
-                        onChange={handleChange}
+                        onChange={(e) => handleChange(e)}
                     />
                 </label>
                 <br />
-                <label>
-                    Maximum height of your breed:
-                    <br />
+                <br />
+                <label htmlFor='heightmax' >
+                    Maximum height:
                     <input
+                        id="heightmax"
                         name='heightmax'
                         type='text'
                         placeholder='Write here...'
                         value={input.heightmax}
-                        onChange={handleChange}
+                        onChange={(e) => handleChange(e)}
                     />
                 </label>
                 <br />
-                <label>
-                    Life span of your breed:
-                    <br />
+                <br />
+                <label htmlFor='life_span' >
+                    Life span:
                     <input
+                        id='life_span'
                         name='life_span'
                         type='text'
                         placeholder='Write here...'
@@ -96,29 +111,24 @@ export function AddDog() {
                     <br />
                 </label>
                 <br />
-                <label>
-                    Temperaments of your breed:
-                    <br />
-                    <select multiple={true} value={[
-                        "Stubborn", "Curious", "Playful", "Adventurous", "Active", "Fun loving",
-                        "Aloof", "Clownish", "Dignified", "Independent", "Happy", "Wild", "Hardworking",
-                        "Dutiful", "Outgoing", "Friendly", "Alert", "Confident", "Intelligent", "Courageous",
-                        "Loyal", "Brave", "Docile", "Responsive", "Composed", "Receptive", "Faithful", "Loving",
-                        "Protective", "Trainable", "Responsible", "Energetic", "Gentle", "Affectionate", "Devoted",
-                        "Assertive", "Dominant", "Strong Willed", "Obedient", "Reserved", "Kind", "Sweet Tempered",
-                        "Tenacious", "Attentive", "Steady", "Bold", "Proud", "Reliable", "Fearless", "Lively",
-                        "Self assured", "Cautious", "Eager", "Good-natured", "Spirited", "Companionable",
-                        "Even Tempered", "Rugged", "Fierce", "Refined", "Joyful", "Agile", "Amiable", "Excitable",
-                        "Determined", "Self confidence", "Hardy", "Calm", "Good tempered", "Watchful",
-                        "Hard working", "Feisty", "Cheerful", "Sensitive", "Easygoing", "Adaptable", "Trusting",
-                        "Lovable", "Territorial", "Keen", "Familial", "Rational", "Bright", "Quick", "Powerful",
-                        "Gay", "Stable", "Quiet", "Inquisitive", "Strong", "Sociable", "Patient", "Suspicious",
-                        "Great hearted", "Merry", "Vocal", "Tolerant", "Mischievous", "People-Oriented", "Bossy",
-                        "Cunning", "Athletic", "Boisterous", "Cooperative", "Trustworthy", "Self important",
-                        "Respectful", "Thoughtful", "Generous", "Cat-like", "Sturdy"]}
+                <h3>Temperaments</h3>
+                <select id="temperaments" htmlFor="temperaments" name="temperaments" value={input.checkbox} onChange={handleChange}
                     >
-                    </select>
-                </label>
+                    <option value="Strong">Strong</option>
+                    <option value="Curious">Curious</option>
+                    <option value="Friendly">Friendly</option>
+                    <option value="Dominant">Dominant</option>
+                    <option value="Agile">Agile</option>
+                    <option value="Sweet Tempered">Sweet Tempered</option>
+                    <option value="Fun Loving">Fun Loving</option>
+                    <option value="Docile">Docile</option>
+                    <option value="Sociable">Sociable</option>
+                    <option value="Patient">Patient</option>
+                    <option value="Protective">Protective</option>
+                    <option value="Joyful">Joyful</option>
+                </select>
+
+                <br />
                 <br />
                 <button type='submit'>Add Dog</button>
             </form>
@@ -126,17 +136,11 @@ export function AddDog() {
     )
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     return {
-        state: state
+        breedLoaded: state.breedLoaded
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        addBreedNew: o => dispatch(addBreedNew(o))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(addBreedNew)
+export default connect(null, { addBreedNew, getSearchAllBreed })(AddDog)
 

@@ -30,20 +30,6 @@ export function getSearchBreedByName(name) {
     }
 }
 
-
-
-// get name------ prueba 
-/*
-export function getSearchBreedByName(name) {
-    return  {
-        type: SEARCH_BREED_BY_NAME,
-        payload: name
-    }
-}
-*/
-
-
-
 // get/ params id_dog
 export function getSearchBreedById(id_dog) {
     return function (dispatch) {

@@ -4,20 +4,13 @@ import { Link } from 'react-router-dom';
 
 export function AddDogs() {
   return (
-    <div>
+    <div className="container">
       <nav className='grid-container'>
-        <h3>¡Add your breed new here!</h3>
-        <nav>
-          <Link to='/home'>
+        <h3>¡Add your breed here!</h3>
+          <Link to='/dogs'>
             <button type="button">Home</button>
-          </Link>
-
-        </nav>
-
-
+          </Link>      
       </nav>
-
-
     </div>
   )
 };

@@ -24,7 +24,7 @@ const breedsReducer = (state = inicialState, action) => {
     case ADD_BREED_NEW:
       return {
         ...state,
-        breeds: state.breeds.concat(action.payload)
+        breedLoaded: [...state.breedLoaded.concat(action.payload)]
       }
 
     // get/query name

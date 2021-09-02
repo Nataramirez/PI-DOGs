@@ -42,7 +42,7 @@ router.get('/', async function (req, res) {
             include: [{
                model: Temperament,
                attributes: {
-                  exclude: ['createdAt', 'updatedAt', 'id_temp'],
+                  exclude: ['createdAt', 'updatedAt'],
                },
                through: {
                   attributes: []
